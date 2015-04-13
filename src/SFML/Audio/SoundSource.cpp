@@ -171,6 +171,17 @@ float SoundSource::getAttenuation() const
 
 
 ////////////////////////////////////////////////////////////
+SoundSource& SoundSource::operator =(const SoundSource& right)
+{
+    SoundSource temp(right);
+
+    std::swap(m_source, temp.m_source);
+
+    return *this;
+}
+
+
+////////////////////////////////////////////////////////////
 SoundSource::Status SoundSource::getStatus() const
 {
     ALint status;
