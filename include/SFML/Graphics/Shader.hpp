@@ -351,6 +351,12 @@ public:
     ////////////////////////////////////////////////////////////
     void setParameter(const std::string& name, const Vector3f& vector);
 
+    // TODO: Documentation
+    void setParameter(const std::string& name, int x);
+    void setParameter(const std::string& name, int x, int y);
+    void setParameter(const std::string& name, int x, int y, int z);
+    void setParameter(const std::string& name, int x, int y, int z, int w);
+
     ////////////////////////////////////////////////////////////
     /// \brief Change a color parameter of the shader
     ///
