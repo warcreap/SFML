@@ -132,6 +132,124 @@ namespace
 
         return available;
     }
+
+    // Functors to call a glUniform*() variant.
+    template <typename Arg0>
+    struct UniformSetter1
+    {
+        typedef void (__stdcall *FuncPtr)(GLint, Arg0);
+
+        UniformSetter1(FuncPtr function, Arg0 v0) :
+        function(function),
+        v0(v0)
+        {
+        }
+
+        void operator() (GLint location)
+        {
+            function(location, v0);
+        }
+
+        FuncPtr function;
+        Arg0    v0;
+    };
+
+    template <typename Arg0, typename Arg1>
+    struct UniformSetter2
+    {
+        typedef void (__stdcall *FuncPtr)(GLint, Arg0, Arg1);
+
+        UniformSetter2(FuncPtr function, Arg0 v0, Arg1 v1) :
+        function(function),
+        v0(v0),
+        v1(v1)
+        {
+        }
+
+        void operator() (GLint location)
+        {
+            function(location, v0, v1);
+        }
+
+        FuncPtr function;
+        Arg0    v0;
+        Arg1    v1;
+    };
+
+    template <typename Arg0, typename Arg1, typename Arg2>
+    struct UniformSetter3
+    {
+        typedef void (__stdcall *FuncPtr)(GLint, Arg0, Arg1, Arg2);
+
+        UniformSetter3(FuncPtr function, Arg0 v0, Arg1 v1, Arg2 v2) :
+        function(function),
+        v0(v0),
+        v1(v1),
+        v2(v2)
+        {
+        }
+
+        void operator() (GLint location)
+        {
+            function(location, v0, v1, v2);
+        }
+
+        FuncPtr function;
+        Arg0    v0;
+        Arg1    v1;
+        Arg2    v2;
+    };
+
+    template <typename Arg0, typename Arg1, typename Arg2, typename Arg3>
+    struct UniformSetter4
+    {
+        typedef void (__stdcall *FuncPtr)(GLint, Arg0, Arg1, Arg2, Arg3);
+
+        UniformSetter4(FuncPtr function, Arg0 v0, Arg1 v1, Arg2 v2, Arg3 v3) :
+        function(function),
+        v0(v0),
+        v1(v1),
+        v2(v2),
+        v3(v3)
+        {
+        }
+
+        void operator() (GLint location)
+        {
+            function(location, v0, v1, v2, v3);
+        }
+
+        FuncPtr function;
+        Arg0    v0;
+        Arg1    v1;
+        Arg2    v2;
+        Arg3    v3;
+    };
+
+    // Make idiom for parameter inference
+    template <typename Arg0>
+    UniformSetter1<Arg0> makeUniformSetter(void(__stdcall *function)(GLint, Arg0), Arg0 v0)
+    {
+        return UniformSetter1<Arg0>(function, v0);
+    }
+
+    template <typename Arg0, typename Arg1>
+    UniformSetter2<Arg0, Arg1> makeUniformSetter(void(__stdcall *function)(GLint, Arg0, Arg1), Arg0 v0, Arg1 v1)
+    {
+        return UniformSetter2<Arg0, Arg1>(function, v0, v1);
+    }
+
+    template <typename Arg0, typename Arg1, typename Arg2>
+    UniformSetter3<Arg0, Arg1, Arg2> makeUniformSetter(void(__stdcall *function)(GLint, Arg0, Arg1, Arg2), Arg0 v0, Arg1 v1, Arg2 v2)
+    {
+        return UniformSetter3<Arg0, Arg1, Arg2>(function, v0, v1, v2);
+    }
+
+    template <typename Arg0, typename Arg1, typename Arg2, typename Arg3>
+    UniformSetter4<Arg0, Arg1, Arg2, Arg3> makeUniformSetter(void(__stdcall *function)(GLint, Arg0, Arg1, Arg2, Arg3), Arg0 v0, Arg1 v1, Arg2 v2, Arg3 v3)
+    {
+        return UniformSetter4<Arg0, Arg1, Arg2, Arg3>(function, v0, v1, v2, v3);
+    }
 }
 
 
@@ -270,96 +388,28 @@ bool Shader::loadFromStream(InputStream& vertexShaderStream, InputStream& fragme
 ////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, float x)
 {
-    if (m_shaderProgram)
-    {
-        ensureGlContext();
-
-        // Enable program
-        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
-        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
-
-        // Get parameter location and assign it new values
-        GLint location = getParamLocation(name);
-        if (location != -1)
-        {
-            glCheck(GLEXT_glUniform1f(location, x));
-        }
-
-        // Disable program
-        glCheck(GLEXT_glUseProgramObject(program));
-    }
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniform1f, x));
 }
 
 
 ////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, float x, float y)
 {
-    if (m_shaderProgram)
-    {
-        ensureGlContext();
-
-        // Enable program
-        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
-        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
-
-        // Get parameter location and assign it new values
-        GLint location = getParamLocation(name);
-        if (location != -1)
-        {
-            glCheck(GLEXT_glUniform2f(location, x, y));
-        }
-
-        // Disable program
-        glCheck(GLEXT_glUseProgramObject(program));
-    }
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniform2f, x, y));
 }
 
 
 ////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, float x, float y, float z)
 {
-    if (m_shaderProgram)
-    {
-        ensureGlContext();
-
-        // Enable program
-        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
-        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
-
-        // Get parameter location and assign it new values
-        GLint location = getParamLocation(name);
-        if (location != -1)
-        {
-            glCheck(GLEXT_glUniform3f(location, x, y, z));
-        }
-
-        // Disable program
-        glCheck(GLEXT_glUseProgramObject(program));
-    }
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniform3f, x, y, z));
 }
 
 
 ////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, float x, float y, float z, float w)
 {
-    if (m_shaderProgram)
-    {
-        ensureGlContext();
-
-        // Enable program
-        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
-        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
-
-        // Get parameter location and assign it new values
-        GLint location = getParamLocation(name);
-        if (location != -1)
-        {
-            glCheck(GLEXT_glUniform4f(location, x, y, z, w));
-        }
-
-        // Disable program
-        glCheck(GLEXT_glUseProgramObject(program));
-    }
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniform4f, x, y, z, w));
 }
 
 
@@ -387,24 +437,7 @@ void Shader::setParameter(const std::string& name, const Color& color)
 ////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, const sf::Transform& transform)
 {
-    if (m_shaderProgram)
-    {
-        ensureGlContext();
-
-        // Enable program
-        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
-        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
-
-        // Get parameter location and assign it new values
-        GLint location = getParamLocation(name);
-        if (location != -1)
-        {
-            glCheck(GLEXT_glUniformMatrix4fv(location, 1, GL_FALSE, transform.getMatrix()));
-        }
-
-        // Disable program
-        glCheck(GLEXT_glUseProgramObject(program));
-    }
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix4fv, 1, GLboolean(GL_FALSE), transform.getMatrix()));
 }
 
 
@@ -656,6 +689,30 @@ int Shader::getParamLocation(const std::string& name)
         return location;
     }
 }
+
+template <typename F>
+void Shader::setParameterImpl(const std::string& name, F functor)
+{
+    if (m_shaderProgram)
+    {
+        ensureGlContext();
+
+        // Enable program
+        GLEXT_GLhandle program = glCheck(GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
+
+        // Get parameter location and assign it new values
+        GLint location = getParamLocation(name);
+        if (location != -1)
+        {
+            glCheck(functor(location));
+        }
+
+        // Disable program
+        glCheck(GLEXT_glUseProgramObject(program));
+    }
+}
+
 
 } // namespace sf
 
