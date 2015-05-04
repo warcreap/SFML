@@ -22,6 +22,11 @@
 //
 ////////////////////////////////////////////////////////////
 
+// Disable warning C4996: Calling std::copy_n() with raw pointers may be unsafe
+#ifdef _MSC_VER
+    #define _SCL_SECURE_NO_WARNINGS
+#endif
+
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -494,6 +499,72 @@ void Shader::setParameter(const std::string& name, const Matrix3& matrix)
 void Shader::setParameter(const std::string& name, const Matrix4& matrix)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix4fv, 1, GLboolean(GL_FALSE), matrix.pointer));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameterArray(const std::string& name, const float* valueArray, std::size_t length)
+{
+    setParameterImpl(name, makeUniformSetter<GLsizei, const GLfloat*>(GLEXT_glUniform1fv, length, valueArray));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameterArray(const std::string& name, const Vector2f* vectorArray, std::size_t length)
+{
+    const std::size_t vectorSize = 2;
+
+    std::vector<float> contiguous(vectorSize * length);
+    for (std::size_t i = 0; i < length; ++i)
+    {
+        contiguous[vectorSize * i]     = vectorArray[i].x;
+        contiguous[vectorSize * i + 1] = vectorArray[i].y;
+    }
+
+    setParameterImpl(name, makeUniformSetter<GLsizei, const GLfloat*>(GLEXT_glUniform2fv, length, &contiguous[0]));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameterArray(const std::string& name, const Vector3f* vectorArray, std::size_t length)
+{
+    const std::size_t vectorSize = 3;
+
+    std::vector<float> contiguous(vectorSize * length);
+    for (std::size_t i = 0; i < length; ++i)
+    {
+        contiguous[vectorSize * i]     = vectorArray[i].x;
+        contiguous[vectorSize * i + 1] = vectorArray[i].y;
+        contiguous[vectorSize * i + 2] = vectorArray[i].z;
+    }
+
+    setParameterImpl(name, makeUniformSetter<GLsizei, const GLfloat*>(GLEXT_glUniform3fv, length, &contiguous[0]));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameterArray(const std::string& name, const Matrix3* matrixArray, std::size_t length)
+{
+    const std::size_t matrixSize = 3 * 3;
+
+    std::vector<float> contiguous(matrixSize * length);
+    for (std::size_t i = 0; i < length; ++i)
+        std::copy_n(matrixArray[i].pointer, matrixSize, &contiguous[matrixSize * i]);
+
+    setParameterImpl(name, makeUniformSetter<GLsizei, GLboolean, const GLfloat*>(GLEXT_glUniformMatrix3fv, length, GL_FALSE, &contiguous[0]));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameterArray(const std::string& name, const Matrix4* matrixArray, std::size_t length)
+{
+    const std::size_t matrixSize = 4 * 4;
+
+    std::vector<float> contiguous(matrixSize * length);
+    for (std::size_t i = 0; i < length; ++i)
+        std::copy_n(matrixArray[i].pointer, matrixSize, &contiguous[matrixSize * i]);
+
+    setParameterImpl(name, makeUniformSetter<GLsizei, GLboolean, const GLfloat*>(GLEXT_glUniformMatrix4fv, length, GL_FALSE, &contiguous[0]));
 }
 
 

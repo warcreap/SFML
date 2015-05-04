@@ -380,6 +380,15 @@ public:
     void setParameter(const std::string& name, const Matrix3& matrix);
     void setParameter(const std::string& name, const Matrix4& matrix);
 
+    void setParameterArray(const std::string& name, const float* valueArray, std::size_t length);
+    void setParameterArray(const std::string& name, const Vector2f* vectorArray, std::size_t length);
+    void setParameterArray(const std::string& name, const Vector3f* vectorArray, std::size_t length);
+    void setParameterArray(const std::string& name, const Matrix3* matrixArray, std::size_t length);
+    void setParameterArray(const std::string& name, const Matrix4* matrixArray, std::size_t length);
+
+
+    //template <typename T>
+    //void setParameterArray(const std::string& name, const T* array, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a color parameter of the shader
