@@ -456,6 +456,34 @@ void Shader::setParameter(const std::string& name, int x, int y, int z, int w)
 
 
 ////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, bool x)
+{
+    setParameter(name, static_cast<int>(x));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, bool x, bool y)
+{
+    setParameter(name, static_cast<int>(x), static_cast<int>(y));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, bool x, bool y, bool z)
+{
+    setParameter(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, bool x, bool y, bool z, bool w)
+{
+    setParameter(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z), static_cast<int>(w));
+}
+
+
+////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, const Matrix3& matrix)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix3fv, 1, GLboolean(GL_FALSE), matrix.pointer));

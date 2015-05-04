@@ -372,6 +372,11 @@ public:
     void setParameter(const std::string& name, int x, int y, int z);
     void setParameter(const std::string& name, int x, int y, int z, int w);
 
+    void setParameter(const std::string& name, bool x);
+    void setParameter(const std::string& name, bool x, bool y);
+    void setParameter(const std::string& name, bool x, bool y, bool z);
+    void setParameter(const std::string& name, bool x, bool y, bool z, bool w);
+
     void setParameter(const std::string& name, const Matrix3& matrix);
     void setParameter(const std::string& name, const Matrix4& matrix);
 
