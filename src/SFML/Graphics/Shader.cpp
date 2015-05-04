@@ -456,6 +456,20 @@ void Shader::setParameter(const std::string& name, int x, int y, int z, int w)
 
 
 ////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Matrix3& matrix)
+{
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix3fv, 1, GLboolean(GL_FALSE), matrix.pointer));
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Matrix4& matrix)
+{
+    setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix4fv, 1, GLboolean(GL_FALSE), matrix.pointer));
+}
+
+
+////////////////////////////////////////////////////////////
 void Shader::setParameter(const std::string& name, const Color& color)
 {
     setParameter(name, color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);

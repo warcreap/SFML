@@ -79,6 +79,21 @@ public:
     ////////////////////////////////////////////////////////////
     static CurrentTextureType CurrentTexture;
 
+    // TODO: Decide if value or pointer semantics are used
+    template <std::size_t Columns, std::size_t Rows>
+    struct Matrix
+    {
+        explicit Matrix(const float* pointer) :
+        pointer(pointer)
+        {
+        }
+
+        const float* pointer;
+    };
+
+    typedef Matrix<3, 3> Matrix3;
+    typedef Matrix<4, 4> Matrix4;
+
 public:
 
     ////////////////////////////////////////////////////////////
@@ -356,6 +371,10 @@ public:
     void setParameter(const std::string& name, int x, int y);
     void setParameter(const std::string& name, int x, int y, int z);
     void setParameter(const std::string& name, int x, int y, int z, int w);
+
+    void setParameter(const std::string& name, const Matrix3& matrix);
+    void setParameter(const std::string& name, const Matrix4& matrix);
+
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a color parameter of the shader
