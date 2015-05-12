@@ -391,126 +391,126 @@ bool Shader::loadFromStream(InputStream& vertexShaderStream, InputStream& fragme
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, float x)
+void Shader::setFloat(const std::string& name, float x)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform1f, x));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, float x, float y)
+void Shader::setVec2(const std::string& name, float x, float y)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform2f, x, y));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, float x, float y, float z)
+void Shader::setVec3(const std::string& name, float x, float y, float z)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform3f, x, y, z));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, float x, float y, float z, float w)
+void Shader::setVec4(const std::string& name, float x, float y, float z, float w)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform4f, x, y, z, w));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Vector2f& v)
+void Shader::setVec2(const std::string& name, const Vector2f& v)
 {
-    setParameter(name, v.x, v.y);
+    setVec2(name, v.x, v.y);
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Vector3f& v)
+void Shader::setVec3(const std::string& name, const Vector3f& v)
 {
-    setParameter(name, v.x, v.y, v.z);
+    setVec3(name, v.x, v.y, v.z);
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, int x)
+void Shader::setInt(const std::string& name, int x)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform1i, x));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, int x, int y)
+void Shader::setIvec2(const std::string& name, int x, int y)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform2i, x, y));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, int x, int y, int z)
+void Shader::setIvec3(const std::string& name, int x, int y, int z)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform3i, x, y, z));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, int x, int y, int z, int w)
+void Shader::setIvec4(const std::string& name, int x, int y, int z, int w)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniform4i, x, y, z, w));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, bool x)
+void Shader::setBool(const std::string& name, bool x)
 {
-    setParameter(name, static_cast<int>(x));
+    setInt(name, static_cast<int>(x));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, bool x, bool y)
+void Shader::setBvec2(const std::string& name, bool x, bool y)
 {
-    setParameter(name, static_cast<int>(x), static_cast<int>(y));
+    setIvec2(name, static_cast<int>(x), static_cast<int>(y));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, bool x, bool y, bool z)
+void Shader::setBvec3(const std::string& name, bool x, bool y, bool z)
 {
-    setParameter(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z));
+    setIvec3(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, bool x, bool y, bool z, bool w)
+void Shader::setBvec4(const std::string& name, bool x, bool y, bool z, bool w)
 {
-    setParameter(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z), static_cast<int>(w));
+    setIvec4(name, static_cast<int>(x), static_cast<int>(y), static_cast<int>(z), static_cast<int>(w));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Matrix3& matrix)
+void Shader::setMat3(const std::string& name, const Matrix3& matrix)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix3fv, 1, GLboolean(GL_FALSE), matrix.pointer));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Matrix4& matrix)
+void Shader::setMat4(const std::string& name, const Matrix4& matrix)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix4fv, 1, GLboolean(GL_FALSE), matrix.pointer));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameterArray(const std::string& name, const float* valueArray, std::size_t length)
+void Shader::setFloatArray(const std::string& name, const float* valueArray, std::size_t length)
 {
     setParameterImpl(name, makeUniformSetter<GLsizei, const GLfloat*>(GLEXT_glUniform1fv, length, valueArray));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameterArray(const std::string& name, const Vector2f* vectorArray, std::size_t length)
+void Shader::setVec2Array(const std::string& name, const Vector2f* vectorArray, std::size_t length)
 {
     const std::size_t vectorSize = 2;
 
@@ -526,7 +526,7 @@ void Shader::setParameterArray(const std::string& name, const Vector2f* vectorAr
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameterArray(const std::string& name, const Vector3f* vectorArray, std::size_t length)
+void Shader::setVec3Array(const std::string& name, const Vector3f* vectorArray, std::size_t length)
 {
     const std::size_t vectorSize = 3;
 
@@ -543,7 +543,7 @@ void Shader::setParameterArray(const std::string& name, const Vector3f* vectorAr
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameterArray(const std::string& name, const Matrix3* matrixArray, std::size_t length)
+void Shader::setMat3Array(const std::string& name, const Matrix3* matrixArray, std::size_t length)
 {
     const std::size_t matrixSize = 3 * 3;
 
@@ -556,7 +556,7 @@ void Shader::setParameterArray(const std::string& name, const Matrix3* matrixArr
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameterArray(const std::string& name, const Matrix4* matrixArray, std::size_t length)
+void Shader::setMat4Array(const std::string& name, const Matrix4* matrixArray, std::size_t length)
 {
     const std::size_t matrixSize = 4 * 4;
 
@@ -569,21 +569,21 @@ void Shader::setParameterArray(const std::string& name, const Matrix4* matrixArr
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Color& color)
+void Shader::setVec4(const std::string& name, const Color& color)
 {
-    setParameter(name, color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);
+    setVec4(name, color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const sf::Transform& transform)
+void Shader::setMat4(const std::string& name, const sf::Transform& transform)
 {
     setParameterImpl(name, makeUniformSetter(GLEXT_glUniformMatrix4fv, 1, GLboolean(GL_FALSE), transform.getMatrix()));
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Texture& texture)
+void Shader::setSampler2D(const std::string& name, const Texture& texture)
 {
     if (m_shaderProgram)
     {
@@ -618,7 +618,7 @@ void Shader::setParameter(const std::string& name, const Texture& texture)
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, CurrentTextureType)
+void Shader::setSampler2D(const std::string& name, CurrentTextureType)
 {
     if (m_shaderProgram)
     {
@@ -972,13 +972,13 @@ void Shader::setParameter(const std::string& name, const sf::Transform& transfor
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const Texture& texture)
+void Shader::setSampler2D(const std::string& name, const Texture& texture)
 {
 }
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, CurrentTextureType)
+void Shader::setSampler2D(const std::string& name, CurrentTextureType)
 {
 }
 

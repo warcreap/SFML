@@ -253,7 +253,7 @@ public:
     /// \param x    Value to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, float x);
+    void setFloat(const std::string& name, float x);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a 2-components vector parameter of the shader
@@ -275,7 +275,7 @@ public:
     /// \param y    Second component of the value to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, float x, float y);
+    void setVec2(const std::string& name, float x, float y);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a 3-components vector parameter of the shader
@@ -298,7 +298,7 @@ public:
     /// \param z    Third component of the value to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, float x, float y, float z);
+    void setVec3(const std::string& name, float x, float y, float z);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a 4-components vector parameter of the shader
@@ -322,7 +322,7 @@ public:
     /// \param w    Fourth component of the value to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, float x, float y, float z, float w);
+    void setVec4(const std::string& name, float x, float y, float z, float w);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a 2-components vector parameter of the shader
@@ -343,7 +343,7 @@ public:
     /// \param vector Vector to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, const Vector2f& vector);
+    void setVec2(const std::string& name, const Vector2f& vector);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a 3-components vector parameter of the shader
@@ -364,27 +364,27 @@ public:
     /// \param vector Vector to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, const Vector3f& vector);
+    void setVec3(const std::string& name, const Vector3f& vector);
 
     // TODO: Documentation
-    void setParameter(const std::string& name, int x);
-    void setParameter(const std::string& name, int x, int y);
-    void setParameter(const std::string& name, int x, int y, int z);
-    void setParameter(const std::string& name, int x, int y, int z, int w);
+    void setInt(const std::string& name, int x);
+    void setIvec2(const std::string& name, int x, int y);
+    void setIvec3(const std::string& name, int x, int y, int z);
+    void setIvec4(const std::string& name, int x, int y, int z, int w);
 
-    void setParameter(const std::string& name, bool x);
-    void setParameter(const std::string& name, bool x, bool y);
-    void setParameter(const std::string& name, bool x, bool y, bool z);
-    void setParameter(const std::string& name, bool x, bool y, bool z, bool w);
+    void setBool(const std::string& name, bool x);
+    void setBvec2(const std::string& name, bool x, bool y);
+    void setBvec3(const std::string& name, bool x, bool y, bool z);
+    void setBvec4(const std::string& name, bool x, bool y, bool z, bool w);
 
-    void setParameter(const std::string& name, const Matrix3& matrix);
-    void setParameter(const std::string& name, const Matrix4& matrix);
+    void setMat3(const std::string& name, const Matrix3& matrix);
+    void setMat4(const std::string& name, const Matrix4& matrix);
 
-    void setParameterArray(const std::string& name, const float* valueArray, std::size_t length);
-    void setParameterArray(const std::string& name, const Vector2f* vectorArray, std::size_t length);
-    void setParameterArray(const std::string& name, const Vector3f* vectorArray, std::size_t length);
-    void setParameterArray(const std::string& name, const Matrix3* matrixArray, std::size_t length);
-    void setParameterArray(const std::string& name, const Matrix4* matrixArray, std::size_t length);
+    void setFloatArray(const std::string& name, const float* valueArray, std::size_t length);
+    void setVec2Array(const std::string& name, const Vector2f* vectorArray, std::size_t length);
+    void setVec3Array(const std::string& name, const Vector3f* vectorArray, std::size_t length);
+    void setMat3Array(const std::string& name, const Matrix3* matrixArray, std::size_t length);
+    void setMat4Array(const std::string& name, const Matrix4* matrixArray, std::size_t length);
 
 
     //template <typename T>
@@ -415,7 +415,7 @@ public:
     /// \param color Color to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, const Color& color);
+    void setVec4(const std::string& name, const Color& color);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a matrix parameter of the shader
@@ -438,7 +438,7 @@ public:
     /// \param transform Transform to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, const sf::Transform& transform);
+    void setMat4(const std::string& name, const sf::Transform& transform);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a texture parameter of the shader
@@ -470,7 +470,7 @@ public:
     /// \param texture Texture to assign
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, const Texture& texture);
+    void setSampler2D(const std::string& name, const Texture& texture);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change a texture parameter of the shader
@@ -493,7 +493,7 @@ public:
     /// \param name Name of the texture in the shader
     ///
     ////////////////////////////////////////////////////////////
-    void setParameter(const std::string& name, CurrentTextureType);
+    void setSampler2D(const std::string& name, CurrentTextureType);
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the underlying OpenGL handle of the shader.
