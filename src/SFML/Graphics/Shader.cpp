@@ -524,6 +524,20 @@ void Shader::setVec2Array(const std::string& name, const Vector2f* vectorArray, 
     setParameterImpl(name, makeUniformSetter<GLsizei, const GLfloat*>(GLEXT_glUniform2fv, length, &contiguous[0]));
 }
 
+////////////////////////////////////////////////////////////
+void Shader::setIvec2Array(const std::string& name, const Vector2i* vectorArray, std::size_t length)
+{
+    const std::size_t vectorSize = 2;
+
+    std::vector<int> contiguous(vectorSize * length);
+    for (std::size_t i = 0; i < length; ++i)
+    {
+        contiguous[vectorSize * i]     = vectorArray[i].x;
+        contiguous[vectorSize * i + 1] = vectorArray[i].y;
+    }
+
+    setParameterImpl(name, makeUniformSetter<GLsizei, const GLint*>(GLEXT_glUniform2iv, length, &contiguous[0]));
+}
 
 ////////////////////////////////////////////////////////////
 void Shader::setVec3Array(const std::string& name, const Vector3f* vectorArray, std::size_t length)

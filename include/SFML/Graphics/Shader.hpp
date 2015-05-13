@@ -382,6 +382,7 @@ public:
 
     void setFloatArray(const std::string& name, const float* valueArray, std::size_t length);
     void setVec2Array(const std::string& name, const Vector2f* vectorArray, std::size_t length);
+    void setIvec2Array(const std::string& name, const Vector2i* vectorArray, std::size_t length);
     void setVec3Array(const std::string& name, const Vector3f* vectorArray, std::size_t length);
     void setMat3Array(const std::string& name, const Matrix3* matrixArray, std::size_t length);
     void setMat4Array(const std::string& name, const Matrix4* matrixArray, std::size_t length);
