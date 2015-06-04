@@ -241,6 +241,22 @@ private:
     static LRESULT CALLBACK globalOnEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
     ////////////////////////////////////////////////////////////
+    /// \brief Convert the hardware ID to a 0 based index
+    ///
+    /// \param id Hardware ID
+    ///
+    /// \return Touch index, -1 on failure
+    ///
+    ////////////////////////////////////////////////////////////
+    Int8 getTouchID(DWORD id);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Helper function to prepare touch handling
+    ///
+    ////////////////////////////////////////////////////////////
+    void WindowImplWin32::prepareTouch();
+
+    ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
     HWND     m_handle;           ///< Win32 handle of the window
@@ -252,6 +268,8 @@ private:
     bool     m_resizing;         ///< Is the window being resized?
     Uint16   m_surrogate;        ///< First half of the surrogate pair, in case we're receiving a Unicode character in two events
     bool     m_mouseInside;      ///< Mouse is inside the window?
+    DWORD    m_touchIDs[10];     ///< Used for conversion from hardware dependent ID to a 0 based index
+    POINT    m_touches[10];      ///< Touch history to detect actual moves
 };
 
 } // namespace priv
