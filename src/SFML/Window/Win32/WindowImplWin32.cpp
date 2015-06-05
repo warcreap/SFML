@@ -63,6 +63,8 @@ namespace
     const wchar_t*             className        = L"SFML_Window";
     sf::priv::WindowImplWin32* fullscreenWindow = NULL;
     HINSTANCE                  user32Dll        = NULL;
+    DWORD                      touchIDs[10];
+    POINT                      touches[10];
 
 #if WINVER < 0x0601
     // Define touch API that's available for more recent versions of Windows
@@ -106,6 +108,22 @@ namespace
 #else
 #define touchEnabled true;
 #endif
+
+    // Convert a hardware dependent ID to a 0 based index we can use
+    sf::Int8 getTouchID(DWORD id)
+    {
+        for (int i = 0; i < 10; ++i)
+        {
+            if (touchIDs[i] == id)
+                return i;
+            if (touchIDs[i] == -1)
+            {
+                touchIDs[i] = id;
+                return i;
+            }
+        }
+        return -1;
+    }
 
     // Get a system error string from an error code
     std::string getErrorString(DWORD error)
@@ -1016,7 +1034,7 @@ void WindowImplWin32::processEvent(UINT message, WPARAM wParam, LPARAM lParam)
                             pushEvent(event);
 
                             // Prevent initial move event
-                            m_touches[index] = point;
+                            touches[index] = point;
                             err() << "down: " << events[i].dwID << ", x: " << point.x << ", y: " << point.y << std::endl;
                         }
                         if (events[i].dwFlags & TOUCHEVENTF_UP) {
@@ -1024,14 +1042,14 @@ void WindowImplWin32::processEvent(UINT message, WPARAM wParam, LPARAM lParam)
                             pushEvent(event);
 
                             // Remove the stored ID
-                            m_touchIDs[index] = -1;
+                            touchIDs[index] = -1;
                             err() << "up: " << events[i].dwID << ", x: " << point.x << ", y: " << point.y << std::endl;
                         }
                         if (events[i].dwFlags & TOUCHEVENTF_MOVE) {
                             // Only handle real movement
-                            if (m_touches[index].x != point.x || m_touches[index].y != point.y)
+                            if (touches[index].x != point.x || touches[index].y != point.y)
                             {
-                                m_touches[index] = point;
+                                touches[index] = point;
                                 event.type = Event::TouchMoved;
                                 pushEvent(event);
                                 err() << "moved: " << events[i].dwID << ", x: " << point.x << ", y: " << point.y << std::endl;
@@ -1214,22 +1232,6 @@ LRESULT CALLBACK WindowImplWin32::globalOnEvent(HWND handle, UINT message, WPARA
 }
 
 ////////////////////////////////////////////////////////////
-Int8 WindowImplWin32::getTouchID(DWORD id)
-{
-    for (int i = 0; i < 10; ++i)
-    {
-        if (m_touchIDs[i] == id)
-            return i;
-        if (m_touchIDs[i] == -1)
-        {
-            m_touchIDs[i] = id;
-            return i;
-        }
-    }
-    return -1;
-}
-
-////////////////////////////////////////////////////////////
 void WindowImplWin32::prepareTouch()
 {
     static bool prepared = false;
@@ -1247,13 +1249,13 @@ void WindowImplWin32::prepareTouch()
         {
             CloseTouchInputHandle = reinterpret_cast<CloseTouchInputHandleFuncType>(GetProcAddress(user32Dll, "CloseTouchInputHandle"));
             GetTouchInputInfo = reinterpret_cast<GetTouchInputInfoFuncType>(GetProcAddress(user32Dll, "GetTouchInputInfo"));
+
+            // Reset touch IDs
+            for (int i = 0; i < 10; ++i)
+                touchIDs[i] = -1;
         }
 #endif
     }
-
-    // Reset touch IDs
-    for (int i = 0; i < 10; ++i)
-        m_touchIDs[i] = -1;
 
     if (touchEnabled)
         RegisterTouchWindow(m_handle, 0);
